@@ -9,7 +9,9 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.ulinda.services.StartupService;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {
+    org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration.class
+})
 @EnableScheduling
 @Slf4j
 public class UlindaApplication implements CommandLineRunner {
