@@ -8,6 +8,9 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
+# Make mvnw executable
+RUN chmod +x ./mvnw
+
 # Download dependencies (cached if pom.xml hasn't changed)
 RUN ./mvnw dependency:go-offline -B
 
@@ -29,5 +32,4 @@ USER spring:spring
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
