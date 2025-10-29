@@ -28,16 +28,13 @@ public class AuthController {
 
     private final UserService userService;
     private final SessionService sessionService;
-    private final long jwtExpiration;
     private final SecuritySettingsService securitySettingsService;
 
     public AuthController(UserService userService,
                           SessionService sessionService,
-                          @Value("${ULINDA_JWT_EXPIRATION}") long jwtExpiration,
                           SecuritySettingsService securitySettingsService) {
         this.userService = userService;
         this.sessionService = sessionService;
-        this.jwtExpiration = jwtExpiration;
         this.securitySettingsService = securitySettingsService;
     }
 
@@ -78,11 +75,11 @@ public class AuthController {
             sessionCookie.setHttpOnly(true);
             sessionCookie.setSecure(true);
             sessionCookie.setPath("/");
-            sessionCookie.setMaxAge(Math.toIntExact(jwtExpiration / 1000)); // Convert ms to seconds
+            sessionCookie.setMaxAge(Math.toIntExact(securitySettingsService.getSessionTimeoutMinutes() * 60)); // Convert ms to seconds
             response.addCookie(sessionCookie);
 
             // Return response without token
-            LoginResponse loginResponse = new LoginResponse(null, userId.toString(), jwtExpiration);
+            LoginResponse loginResponse = new LoginResponse();
             loginResponse.setAdminUser(user.isAdminUser());
             loginResponse.setCanGenerateTokens(user.isCanGenerateTokens());
             loginResponse.setMaxTokenCount(user.getMaxTokenCount());
