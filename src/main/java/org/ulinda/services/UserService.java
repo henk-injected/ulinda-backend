@@ -28,7 +28,7 @@ import java.util.UUID;
 @Slf4j
 public class UserService {
 
-    @Value("${ULINDA_ADMIN_SECRET:}")
+    @Value("${ULINDA_ADMIN_PASSWORD:}")
     private String adminUserPassword;
 
     private final UserRepository userRepository;
@@ -65,7 +65,7 @@ public class UserService {
     @Transactional
     public UUID createAdminUser() {
         if (StringUtils.isEmpty(adminUserPassword)) {
-            throw new RuntimeException("ULINDA_ADMIN_SECRET environment variable not set");
+            throw new RuntimeException("ULINDA_ADMIN_PASSWORD environment variable not set");
         }
         if (!userRepository.existsByUsername("admin")) {
             String encryptedPassword = passwordEncoder.encode(adminUserPassword);
