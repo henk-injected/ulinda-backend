@@ -119,6 +119,11 @@ public class UserService {
     public void changePassword(UUID userId, String newPassword) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
+        // Check if new password is the same as current password
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new FrontendException("New password cannot be the same as your current password.", ErrorCode.PASSWORD_REQUIREMENT_FAILED, true);
+        }
+
         // Validate new password against security settings
         PasswordValidationService.PasswordValidationResult validationResult =
                 passwordValidationService.validatePasswordWithUsername(newPassword, user.getUsername());
@@ -163,6 +168,11 @@ public class UserService {
         //Check old password provided
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new FrontendException("Old password doesn't match", ErrorCode.OLD_PASSWORD_INCORRECT, true);
+        }
+
+        // Check if new password is the same as current password
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new FrontendException("New password cannot be the same as your current password.", ErrorCode.PASSWORD_REQUIREMENT_FAILED, true);
         }
 
         // Validate new password against security settings
