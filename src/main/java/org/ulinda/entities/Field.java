@@ -42,9 +42,6 @@ public class Field {
     @Column("type")
     private FieldType type;
 
-    @Column("is_parent_field")
-    private Boolean isParentField;
-
     @CreatedDate
     @Column("created_at")
     private Instant createdAt;
@@ -57,18 +54,16 @@ public class Field {
     private Boolean isRequired;
 
     // Constructor for creating new fields (without ID and timestamps)
-    public Field(String name, String description, FieldType type, Boolean isParentField) {
+    public Field(String name, String description, FieldType type) {
         this.name = name;
         this.description = description;
         this.type = type;
-        this.isParentField = isParentField;
     }
 
     // Constructor without description (for required fields only)
-    public Field(String name, FieldType type, Boolean isParentField) {
+    public Field(String name, FieldType type) {
         this.name = name;
         this.type = type;
-        this.isParentField = isParentField;
     }
 }
 

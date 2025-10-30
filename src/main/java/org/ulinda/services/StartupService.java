@@ -92,7 +92,6 @@ public class StartupService {
                         name TEXT NOT NULL,
                         description TEXT,
                         type TEXT NOT NULL,
-                        is_parent_field BOOLEAN NOT NULL,
                         is_required BOOLEAN NOT NULL,
                         created_at TIMESTAMP WITH TIME ZONE NOT NULL,
                         updated_at TIMESTAMP WITH TIME ZONE NOT NULL

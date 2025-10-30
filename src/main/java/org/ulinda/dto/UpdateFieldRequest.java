@@ -10,8 +10,6 @@ public class UpdateFieldRequest {
     @NotBlank
     private String name;
     private String description;
-    @JsonProperty("isParent")
-    private boolean isParent = false;
     @JsonProperty("isRequired")
     private boolean isRequired = false;
 }

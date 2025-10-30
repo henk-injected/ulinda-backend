@@ -61,7 +61,6 @@ public class ModelService {
             Field field = new Field();
             field.setDescription(fieldDto.getDescription());
             field.setName(fieldDto.getName());
-            field.setIsParentField(fieldDto.getIsParentField());
             field.setIsRequired(fieldDto.getIsRequired());
             field.setType(fieldDto.getType());
             field.setModelId(modelId);
@@ -155,7 +154,6 @@ public class ModelService {
                 fieldDto.setDescription(field.getDescription());
                 fieldDto.setName(field.getName());
                 fieldDto.setType(field.getType());
-                fieldDto.setIsParentField(field.getIsParentField());
                 fieldDto.setIsRequired(field.getIsRequired());
                 modelDto.getFields().add(fieldDto);
             }
@@ -205,7 +203,6 @@ public class ModelService {
             fieldDto.setDescription(field.getDescription());
             fieldDto.setName(field.getName());
             fieldDto.setType(field.getType());
-            fieldDto.setIsParentField(field.getIsParentField());
             fieldDto.setIsRequired(field.getIsRequired());
             modelDto.getFields().add(fieldDto);
         }
@@ -871,7 +868,6 @@ public class ModelService {
             fieldDto.setName(field.getName());
             fieldDto.setDescription(field.getDescription());
             fieldDto.setType(field.getType());
-            fieldDto.setIsParentField(field.getIsParentField());
             fieldDto.setIsRequired(field.getIsRequired());
             fieldDtos.add(fieldDto);
         }
@@ -1444,7 +1440,6 @@ public class ModelService {
         Field field = new Field();
         field.setDescription(fieldDto.getDescription());
         field.setName(fieldDto.getName());
-        field.setIsParentField(fieldDto.getIsParentField());
         field.setIsRequired(fieldDto.getIsRequired());
         field.setType(fieldDto.getType());
         field.setModelId(modelId);
@@ -1494,7 +1489,6 @@ public class ModelService {
         newField.setName(request.getNewFieldName());
         newField.setType(newType);
         newField.setDescription(originalField.getDescription());
-        newField.setIsParentField(originalField.getIsParentField());
         newField.setIsRequired(false); // Always false initially for safety (user can enable later)
         fieldRepository.save(newField);
 
@@ -1535,7 +1529,6 @@ public class ModelService {
         fieldDto.setName(newField.getName());
         fieldDto.setType(newField.getType());
         fieldDto.setDescription(newField.getDescription());
-        fieldDto.setIsParentField(newField.getIsParentField());
         fieldDto.setIsRequired(newField.getIsRequired());
 
         return fieldDto;
@@ -1640,7 +1633,6 @@ public class ModelService {
     public void updateField(UUID fieldId, UpdateFieldRequest updateFieldRequest) {
         Field field = fieldRepository.findById(fieldId).orElseThrow(() -> new IllegalArgumentException("Invalid field id"));
         field.setName(updateFieldRequest.getName());
-        field.setIsParentField(updateFieldRequest.isParent());
         field.setIsRequired(updateFieldRequest.isRequired());
         field.setDescription(updateFieldRequest.getDescription());
         fieldRepository.save(field);

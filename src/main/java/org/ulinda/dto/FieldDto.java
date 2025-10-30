@@ -15,8 +15,6 @@ public class FieldDto {
     @NotNull
     private String name;
     private String description;
-    @JsonProperty("isParentField")
-    private Boolean isParentField = false;
     @JsonProperty("isRequired")
     private Boolean isRequired = false;
 }
