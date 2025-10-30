@@ -37,8 +37,6 @@ public class SecuritySettingsService {
         securitySettingsDto.setPasswordRequiresSpecialCharacters(securitySettings.getPasswordRequiresSpecialCharacters());
         securitySettingsDto.setPasswordRequiresSpecialCharactersMinimumCount(securitySettings.getPasswordRequiresSpecialCharactersMinimumCount());
         securitySettingsDto.setPasswordAllowedSpecialCharacters(securitySettings.getPasswordAllowedSpecialCharacters());
-        securitySettingsDto.setBlockCommonPasswords(securitySettings.getBlockCommonPasswords());
-        securitySettingsDto.setBlockDictionaryWords(securitySettings.getBlockDictionaryWords());
         securitySettingsDto.setPreventUsernameInPassword(securitySettings.getPreventUsernameInPassword());
         securitySettingsDto.setPasswordExpiration(securitySettings.getPasswordExpiration());
         securitySettingsDto.setPasswordExpirationDays(securitySettings.getPasswordExpirationDays());
@@ -84,8 +82,6 @@ public class SecuritySettingsService {
         securitySettings.setPasswordRequiresSpecialCharacters(securitySettingsDto.getPasswordRequiresSpecialCharacters());
         securitySettings.setPasswordRequiresSpecialCharactersMinimumCount(securitySettingsDto.getPasswordRequiresSpecialCharactersMinimumCount());
         securitySettings.setPasswordAllowedSpecialCharacters(securitySettingsDto.getPasswordAllowedSpecialCharacters());
-        securitySettings.setBlockCommonPasswords(securitySettingsDto.getBlockCommonPasswords());
-        securitySettings.setBlockDictionaryWords(securitySettingsDto.getBlockDictionaryWords());
         securitySettings.setPreventUsernameInPassword(securitySettingsDto.getPreventUsernameInPassword());
         securitySettings.setPasswordExpiration(securitySettingsDto.getPasswordExpiration());
         securitySettings.setPasswordExpirationDays(securitySettingsDto.getPasswordExpirationDays());
