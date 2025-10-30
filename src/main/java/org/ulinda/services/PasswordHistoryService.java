@@ -50,12 +50,10 @@ public class PasswordHistoryService {
         // Check if plain text password matches any stored hash
         for (PasswordHistory entry : history) {
             if (passwordEncoder.matches(plainTextPassword, entry.getPasswordHash())) {
-                log.info("Password entry found in history repository");
                 log.debug("Password matches history entry from {}", entry.getCreatedAt());
                 return true;
             }
         }
-        log.info("Password entry not found from history repository");
 
         return false;
     }
