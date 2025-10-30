@@ -40,6 +40,7 @@ public class UserService {
     private final PasswordValidationService passwordValidationService;
     private final SessionService sessionService;
     private final SecuritySettingsService securitySettingsService;
+    private final PasswordHistoryService passwordHistoryService;
 
     public UserService(
             UserRepository userRepository,
@@ -50,7 +51,8 @@ public class UserService {
             CurrentUserTokenRepository currentUserTokenRepository,
             PasswordValidationService passwordValidationService,
             SessionService sessionService,
-            SecuritySettingsService securitySettingsService) {
+            SecuritySettingsService securitySettingsService,
+            PasswordHistoryService passwordHistoryService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.passwordService = passwordService;
@@ -60,6 +62,7 @@ public class UserService {
         this.passwordValidationService = passwordValidationService;
         this.sessionService = sessionService;
         this.securitySettingsService = securitySettingsService;
+        this.passwordHistoryService = passwordHistoryService;
     }
 
     @Transactional
@@ -124,8 +127,17 @@ public class UserService {
             throw new FrontendException(validationResult.getErrorMessage(), ErrorCode.PASSWORD_REQUIREMENT_FAILED, true);
         }
 
-        user.setPassword(passwordEncoder.encode(newPassword));
+        // Check if password was used before
+        if (passwordHistoryService.isPasswordInHistory(userId, newPassword)) {
+            throw new FrontendException("Password has been used previously. Please choose a different password.", ErrorCode.PASSWORD_REQUIREMENT_FAILED, true);
+        }
 
+        // Store old password in history before changing
+        String oldPasswordHash = user.getPassword();
+        passwordHistoryService.addPasswordToHistory(userId, oldPasswordHash);
+
+        // Update to new password
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
         // Kill all active sessions for this user
@@ -161,6 +173,16 @@ public class UserService {
             throw new FrontendException(validationResult.getErrorMessage(), ErrorCode.PASSWORD_REQUIREMENT_FAILED, true);
         }
 
+        // Check if password was used before
+        if (passwordHistoryService.isPasswordInHistory(user.getId(), newPassword)) {
+            throw new FrontendException("Password has been used previously. Please choose a different password.", ErrorCode.PASSWORD_REQUIREMENT_FAILED, true);
+        }
+
+        // Store old password in history before changing
+        String oldPasswordHash = user.getPassword();
+        passwordHistoryService.addPasswordToHistory(user.getId(), oldPasswordHash);
+
+        // Update to new password
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setMustChangePassword(false);
         userRepository.save(user);
@@ -176,6 +198,11 @@ public class UserService {
         User user = userRepository.findById(uuid).orElseThrow(() -> new RuntimeException("User not found"));
         final String newPassword = passwordService.generatePassword();
 
+        // Store old password in history before changing
+        String oldPasswordHash = user.getPassword();
+        passwordHistoryService.addPasswordToHistory(uuid, oldPasswordHash);
+
+        // Update to new password (randomly generated, no need to check history)
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setMustChangePassword(true);
         userRepository.save(user);

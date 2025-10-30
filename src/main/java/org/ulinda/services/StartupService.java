@@ -199,6 +199,26 @@ public class StartupService {
         jdbcTemplate.execute(createSql);
     }
 
+    private void createPasswordHistoryTable() {
+        String createSql = """
+            CREATE TABLE password_history (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                user_id UUID NOT NULL,
+                password_hash TEXT NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+
+                CONSTRAINT fk_password_history_user_id
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            );
+        """;
+        jdbcTemplate.execute(createSql);
+
+        String createIndexSql = """
+            CREATE INDEX idx_password_history_user_id ON password_history (user_id)
+        """;
+        jdbcTemplate.execute(createIndexSql);
+    }
+
     private void deleteTables() {
         deleteModelLinksTables();
 
@@ -213,6 +233,7 @@ public class StartupService {
             DROP TABLE IF EXISTS user_roles;
             DROP TABLE IF EXISTS current_user_tokens;
             DROP TABLE IF EXISTS sessions;
+            DROP TABLE IF EXISTS password_history;
             DROP TABLE IF EXISTS security_settings;
             DROP TABLE IF EXISTS users;
             DROP TABLE IF EXISTS error_logs;
@@ -337,6 +358,8 @@ public class StartupService {
             log.info("Sessions table created successfully");
             createSecuritySettingsTable();
             log.info("Security settings table created successfully");
+            createPasswordHistoryTable();
+            log.info("Password history table created successfully");
             log.info("Insert security settings");
             securitySettingsService.saveNewSecuritySettings();
         } else {
