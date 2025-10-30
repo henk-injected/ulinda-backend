@@ -1899,15 +1899,25 @@ public class ModelService {
         //Check UUID's
         ModelLink modelLink = modelLinkRepository.findById(modelLinkId).orElseThrow(() -> new RuntimeException("modelLink not found"));
 
-        // Perform permissions check
+        // Perform permissions checks
         if (!userHasGivenPermissionOnModel(userId, modelLink.getModel1Id(), ModelPermission.VIEW_RECORDS)) {
             log.error("Cannot unlink records: User with ID: [" + userId + "] does not have VIEW permission on model with ID: [" + modelLink.getModel1Id() + "]");
             throw new FrontendException("VIEW permission required", ErrorCode.PERMISSION_DENIED, true);
         }
 
+        if (!userHasGivenPermissionOnModel(userId, modelLink.getModel1Id(), ModelPermission.EDIT_RECORDS)) {
+            log.error("Cannot unlink records: User with ID: [" + userId + "] does not have EDIT permission on model with ID: [" + modelLink.getModel1Id() + "]");
+            throw new FrontendException("EDIT permission required", ErrorCode.PERMISSION_DENIED, true);
+        }
+
         if (!userHasGivenPermissionOnModel(userId, modelLink.getModel2Id(), ModelPermission.VIEW_RECORDS)) {
             log.error("Cannot unlink records: User with ID: [" + userId + "] does not have VIEW permission on model with ID: [" + modelLink.getModel2Id() + "]");
             throw new FrontendException("VIEW permission required", ErrorCode.PERMISSION_DENIED, true);
+        }
+
+        if (!userHasGivenPermissionOnModel(userId, modelLink.getModel2Id(), ModelPermission.EDIT_RECORDS)) {
+            log.error("Cannot unlink records: User with ID: [" + userId + "] does not have EDIT permission on model with ID: [" + modelLink.getModel2Id() + "]");
+            throw new FrontendException("EDIT permission required", ErrorCode.PERMISSION_DENIED, true);
         }
 
         String sql = "SELECT EXISTS(SELECT 1 FROM model_links_" + sanitizeIdentifier(modelLinkId.toString()) + " WHERE id = ?)";
