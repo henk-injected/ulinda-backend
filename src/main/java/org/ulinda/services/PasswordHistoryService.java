@@ -46,7 +46,6 @@ public class PasswordHistoryService {
 
         // Get password history for user, ordered by most recent first
         List<PasswordHistory> history = passwordHistoryRepository.findByUserIdOrderByCreatedAtDesc(userId);
-        log.info("History size: " + history.size());
 
         // Check if plain text password matches any stored hash
         for (PasswordHistory entry : history) {
