@@ -1668,10 +1668,15 @@ public class ModelService {
     public void linkRecords(UUID userId, LinkRecordsRequest request) {
 
 
-        // Perform permissions check
+        // Perform permissions checks
         if (!userHasGivenPermissionOnModel(userId, request.getSourceModelId(), ModelPermission.VIEW_RECORDS)) {
             log.error("User does not have permission to link records: Permissions Needed: VIEW records on model with ID: [" + request.getSourceModelId() + "]");
             throw new FrontendException("VIEW permission required", ErrorCode.PERMISSION_DENIED, true);
+        }
+
+        if (!userHasGivenPermissionOnModel(userId, request.getSourceModelId(), ModelPermission.EDIT_RECORDS)) {
+            log.error("User does not have permission to link records: Permissions Needed: EDIT records on model with ID: [" + request.getSourceModelId() + "]");
+            throw new FrontendException("EDIT permission required", ErrorCode.PERMISSION_DENIED, true);
         }
 
         UUID modelLinkId = request.getModelLinkId();
@@ -1692,10 +1697,15 @@ public class ModelService {
             throw new IllegalArgumentException("Invalid model Id");
         }
 
-        // Perform permissions check
+        // Perform permissions checks
         if (!userHasGivenPermissionOnModel(userId, targetModelId, ModelPermission.VIEW_RECORDS)) {
             log.error("User does not have permission to link records: Permissions Needed: VIEW records on model with ID: [" +targetModelId + "]");
             throw new FrontendException("VIEW permission required", ErrorCode.PERMISSION_DENIED, true);
+        }
+
+        if (!userHasGivenPermissionOnModel(userId, targetModelId, ModelPermission.EDIT_RECORDS)) {
+            log.error("User does not have permission to link records: Permissions Needed: EDIT records on model with ID: [" +targetModelId + "]");
+            throw new FrontendException("EDIT permission required", ErrorCode.PERMISSION_DENIED, true);
         }
 
         //Check if target model exists
