@@ -56,7 +56,8 @@ public class StartupService {
                 account_disabled BOOLEAN NOT NULL DEFAULT false,
                 failed_login_attempts INTEGER DEFAULT 0,
                 last_failed_login_attempt TIMESTAMP WITH TIME ZONE,
-                account_locked_until TIMESTAMP WITH TIME ZONE
+                account_locked_until TIMESTAMP WITH TIME ZONE,
+                password_changed_at TIMESTAMP WITH TIME ZONE
             )
             """;
         jdbcTemplate.execute(createSql);

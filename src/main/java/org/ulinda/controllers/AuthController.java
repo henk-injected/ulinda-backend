@@ -64,6 +64,11 @@ public class AuthController {
                 throw new FrontendException("User must change password", ErrorCode.USER_MUST_CHANGE_PASSWORD, true);
             }
 
+            // Check if password has expired
+            if (userService.isPasswordExpired(userId)) {
+                throw new FrontendException("Your password has expired. Please change your password.", ErrorCode.USER_MUST_CHANGE_PASSWORD, true);
+            }
+
             // Get client IP address
             String ipAddress = getClientIpAddress(request);
 

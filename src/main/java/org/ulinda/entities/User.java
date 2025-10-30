@@ -28,6 +28,7 @@ public class User {
     private Integer failedLoginAttempts;
     private Instant lastFailedLoginAttempt;
     private Instant accountLockedUntil;
+    private Instant passwordChangedAt;
 
     // Constructors
     public User() {}

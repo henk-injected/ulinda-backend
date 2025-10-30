@@ -73,6 +73,7 @@ public class UserService {
         if (!userRepository.existsByUsername("admin")) {
             String encryptedPassword = passwordEncoder.encode(adminUserPassword);
             User admin = new User("admin", encryptedPassword, "Admin", "User", true, true, true, 10);
+            admin.setPasswordChangedAt(Instant.now());
             userRepository.save(admin);
             UUID userId = admin.getId();
             if (userId == null) {
@@ -93,6 +94,7 @@ public class UserService {
                     createUserRequest.isCanCreateModels(), createUserRequest.isAdminUser(),
                     createUserRequest.isCanGenerateTokens(), createUserRequest.getMaxTokenCount());
             user.setMustChangePassword(true);
+            user.setPasswordChangedAt(Instant.now());
             userRepository.save(user);
             CreateUserResponse response = new CreateUserResponse();
             response.setUsername(username);
@@ -143,6 +145,7 @@ public class UserService {
 
         // Update to new password
         user.setPassword(passwordEncoder.encode(newPassword));
+        user.setPasswordChangedAt(Instant.now());
         userRepository.save(user);
 
         // Kill all active sessions for this user
@@ -195,6 +198,7 @@ public class UserService {
         // Update to new password
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setMustChangePassword(false);
+        user.setPasswordChangedAt(Instant.now());
         userRepository.save(user);
 
         // Kill all active sessions for this user
@@ -215,6 +219,7 @@ public class UserService {
         // Update to new password (randomly generated, no need to check history)
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setMustChangePassword(true);
+        user.setPasswordChangedAt(Instant.now());
         userRepository.save(user);
 
         // Kill all active sessions for this user
@@ -427,6 +432,32 @@ public class UserService {
         user.setAccountLockedUntil(null);
         userRepository.save(user);
         log.info("Account unlocked for user: {}", username);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isPasswordExpired(UUID userId) {
+        SecuritySettingsDto settings = securitySettingsService.getSecuritySettings();
+
+        // If password expiration is not enabled, password never expires
+        if (!settings.getPasswordExpiration()) {
+            return false;
+        }
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        // If passwordChangedAt is null (legacy users), consider it expired to force update
+        if (user.getPasswordChangedAt() == null) {
+            return true;
+        }
+
+        // Calculate password age in days
+        long daysSincePasswordChange = java.time.Duration.between(
+            user.getPasswordChangedAt(),
+            Instant.now()
+        ).toDays();
+
+        // Check if password has exceeded the expiration period
+        return daysSincePasswordChange >= settings.getPasswordExpirationDays();
     }
 
 }
