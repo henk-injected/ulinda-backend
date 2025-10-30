@@ -183,8 +183,6 @@ public class StartupService {
                 password_requires_special_characters  BOOLEAN NOT NULL,
                 password_requires_special_characters_minimum_count INTEGER NOT NULL,
                 password_allowed_special_characters  TEXT NOT NULL,
-                block_common_passwords BOOLEAN NOT NULL,
-                block_dictionary_words BOOLEAN NOT NULL,
                 prevent_username_in_password BOOLEAN NOT NULL,
                 password_expiration BOOLEAN NOT NULL,
                 password_expiration_days INTEGER NOT NULL,
