@@ -839,8 +839,12 @@ public class ModelService {
                     // Truncate multi-line text fields to 30 characters for search results
                     if (field.getType() == FieldType.MULTI_LINE_TEXT && convertedValue instanceof String) {
                         String textValue = (String) convertedValue;
+                        // Replace all whitespace (including newlines, tabs, multiple spaces) with single space
+                        textValue = textValue.replaceAll("\\s+", " ").trim();
                         if (textValue.length() > 30) {
                             convertedValue = textValue.substring(0, 30) + "...";
+                        } else {
+                            convertedValue = textValue;
                         }
                     }
 
