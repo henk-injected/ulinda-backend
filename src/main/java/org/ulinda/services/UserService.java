@@ -174,6 +174,9 @@ public class UserService {
         user.setMustChangePassword(true);
         userRepository.save(user);
 
+        // Kill all active sessions for this user
+        sessionService.deleteSessionsForUser(uuid);
+
         return newPassword;
 
     }
