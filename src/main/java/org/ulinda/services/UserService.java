@@ -127,6 +127,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
 
         userRepository.save(user);
+
+        // Kill all active sessions for this user
+        sessionService.deleteSessionsForUser(userId);
     }
 
     @Transactional
@@ -161,6 +164,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setMustChangePassword(false);
         userRepository.save(user);
+
+        // Kill all active sessions for this user
+        sessionService.deleteSessionsForUser(user.getId());
 
     }
 
