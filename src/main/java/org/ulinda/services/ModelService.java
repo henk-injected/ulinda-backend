@@ -835,6 +835,15 @@ public class ModelService {
                 Object value = row.get(columnName);
                 if (value != null) {
                     Object convertedValue = convertFromDatabase(value, field.getType());
+
+                    // Truncate multi-line text fields to 30 characters for search results
+                    if (field.getType() == FieldType.MULTI_LINE_TEXT && convertedValue instanceof String) {
+                        String textValue = (String) convertedValue;
+                        if (textValue.length() > 30) {
+                            convertedValue = textValue.substring(0, 30) + "...";
+                        }
+                    }
+
                     fieldValues.put(field.getId(), convertedValue);
                 } else {
                     fieldValues.put(field.getId(), null);
