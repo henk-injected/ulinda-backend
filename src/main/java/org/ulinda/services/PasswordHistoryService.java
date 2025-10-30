@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ulinda.dto.SecuritySettingsDto;
 import org.ulinda.entities.PasswordHistory;
 import org.ulinda.entities.SecuritySettings;
 import org.ulinda.repositories.PasswordHistoryRepository;
@@ -36,7 +37,7 @@ public class PasswordHistoryService {
      * @return true if password was used before, false otherwise
      */
     public boolean isPasswordInHistory(UUID userId, String plainTextPassword) {
-        SecuritySettings settings = securitySettingsService.getSecuritySettings();
+        SecuritySettingsDto settings = securitySettingsService.getSecuritySettings();
 
         // If password history is not enabled, allow any password
         if (!settings.getRememberPreviousPasswords()) {
@@ -64,7 +65,7 @@ public class PasswordHistoryService {
      */
     @Transactional
     public void addPasswordToHistory(UUID userId, String passwordHash) {
-        SecuritySettings settings = securitySettingsService.getSecuritySettings();
+        SecuritySettingsDto settings = securitySettingsService.getSecuritySettings();
 
         // If password history is not enabled, don't store anything
         if (!settings.getRememberPreviousPasswords()) {
