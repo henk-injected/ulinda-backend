@@ -20,8 +20,6 @@ public class SecuritySettings {
     private Boolean passwordRequiresSpecialCharacters;
     private Integer passwordRequiresSpecialCharactersMinimumCount;
     private String passwordAllowedSpecialCharacters;
-    private Boolean blockCommonPasswords;
-    private Boolean blockDictionaryWords;
     private Boolean preventUsernameInPassword;
     private Boolean passwordExpiration;
     private Integer passwordExpirationDays;
