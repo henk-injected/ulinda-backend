@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Ulinda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li:first-child {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fff;
+            margin-right: auto;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #444;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #555;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        .step {
+            background-color: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background-color: #333;
+            color: white;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        ul {
+            margin: 1rem 0 1rem 2rem;
+            color: #666;
+        }
+
+        ul li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .command {
+            display: inline-block;
+            background-color: #e9ecef;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #d63384;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            nav ul li:first-child {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .code-block {
+                padding: 1rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Ulinda</li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="#screenshots">Screenshots</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Getting Started with Ulinda</h1>
+        <p>Deploy Ulinda using Docker Compose in just a few simple steps. This guide will walk you through the entire process.</p>
+
+        <div class="card">
+            <h2>Prerequisites</h2>
+            <p>Before you begin, ensure you have the following installed on your system:</p>
+            <ul>
+                <li><strong>Docker</strong> - Version 20.10 or higher</li>
+                <li><strong>Docker Compose</strong> - Version 2.0 or higher</li>
+            </ul>
+            <p>You can verify your installations by running:</p>
+            <div class="code-block"><code>docker --version
+docker compose version</code></div>
+        </div>
+
+        <div class="card">
+            <h2>Step-by-Step Setup</h2>
+
+            <div class="step">
+                <h3><span class="step-number">1</span>Create Project Directory</h3>
+                <p>Create a new directory for your Ulinda deployment and navigate into it:</p>
+                <div class="code-block"><code>mkdir ulinda
+cd ulinda</code></div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">2</span>Create Docker Compose File</h3>
+                <p>Create a file named <span class="command">docker-compose.yml</span> with the following contents:</p>
+                <div class="code-block"><code>services:
+  postgres:
+    image: postgres:17
+    container_name: ulinda-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ulinda}
+      POSTGRES_USER: ${POSTGRES_USER:-ulinda_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ulinda_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ulinda-network
+
+  backend:
+    image: ulinda/ulinda-backend:latest
+    container_name: ulinda-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-ulinda}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-ulinda_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-ulinda_password}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      ULINDA_ADMIN_PASSWORD: ${ULINDA_ADMIN_PASSWORD:-admin}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8081}:8081"
+    depends_on:
+      - postgres
+    networks:
+      - ulinda-network
+
+  frontend:
+    image: ulinda/ulinda-frontend:latest
+    container_name: ulinda-frontend
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - backend
+    networks:
+      - ulinda-network
+
+volumes:
+  postgres_data:
+
+networks:
+  ulinda-network:
+    driver: bridge</code></div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">3</span>Create Environment File (Optional)</h3>
+                <p>Create a <span class="command">.env</span> file to customize your configuration:</p>
+                <div class="code-block"><code># Database Configuration
+POSTGRES_DB=ulinda
+POSTGRES_USER=ulinda_user
+POSTGRES_PASSWORD=your_secure_password
+
+# Application Configuration
+SPRING_PROFILES_ACTIVE=dev
+ULINDA_ADMIN_PASSWORD=your_admin_password
+
+# Port Configuration
+BACKEND_PORT=8081
+FRONTEND_PORT=3000
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS=http://localhost:3000</code></div>
+                <div class="note">
+                    <strong>Note:</strong> If you don't create a .env file, the default values shown in the docker-compose.yml will be used.
+                </div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">4</span>Pull Docker Images</h3>
+                <p>Download the latest Ulinda images from Docker Hub:</p>
+                <div class="code-block"><code>docker compose pull</code></div>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">5</span>Start the Application</h3>
+                <p>Launch all services in detached mode:</p>
+                <div class="code-block"><code>docker compose up -d</code></div>
+                <p>This command will:</p>
+                <ul>
+                    <li>Start the PostgreSQL database</li>
+                    <li>Initialize the backend Spring Boot application</li>
+                    <li>Launch the frontend web server</li>
+                    <li>Create the necessary network and volumes</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">6</span>Verify Services Are Running</h3>
+                <p>Check that all containers are up and running:</p>
+                <div class="code-block"><code>docker compose ps</code></div>
+                <p>You should see three containers with "Up" status:</p>
+                <ul>
+                    <li>ulinda-postgres</li>
+                    <li>ulinda-backend</li>
+                    <li>ulinda-frontend</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">7</span>Access Ulinda</h3>
+                <p>Open your web browser and navigate to:</p>
+                <div class="code-block"><code>http://localhost:3000</code></div>
+                <p>Default login credentials:</p>
+                <ul>
+                    <li><strong>Username:</strong> admin</li>
+                    <li><strong>Password:</strong> admin (or the password you set in ULINDA_ADMIN_PASSWORD)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Useful Commands</h2>
+
+            <h3>View Logs</h3>
+            <p>View logs from all services:</p>
+            <div class="code-block"><code>docker compose logs -f</code></div>
+            <p>View logs from a specific service:</p>
+            <div class="code-block"><code>docker compose logs -f backend
+docker compose logs -f frontend
+docker compose logs -f postgres</code></div>
+
+            <h3>Stop Services</h3>
+            <p>Stop all services (keeps data):</p>
+            <div class="code-block"><code>docker compose stop</code></div>
+
+            <h3>Restart Services</h3>
+            <p>Restart all services:</p>
+            <div class="code-block"><code>docker compose restart</code></div>
+
+            <h3>Stop and Remove Containers</h3>
+            <p>Stop and remove all containers (keeps data in volumes):</p>
+            <div class="code-block"><code>docker compose down</code></div>
+
+            <h3>Remove Everything (Including Data)</h3>
+            <p>Stop and remove containers, networks, and volumes:</p>
+            <div class="code-block"><code>docker compose down -v</code></div>
+            <div class="note">
+                <strong>Warning:</strong> This will delete all data in the database!
+            </div>
+
+            <h3>Update to Latest Version</h3>
+            <p>Pull new images and restart services:</p>
+            <div class="code-block"><code>docker compose pull
+docker compose up -d</code></div>
+        </div>
+
+        <div class="card">
+            <h2>Troubleshooting</h2>
+
+            <h3>Port Already in Use</h3>
+            <p>If you see an error about ports already being in use, change the ports in your <span class="command">.env</span> file:</p>
+            <div class="code-block"><code>BACKEND_PORT=8082
+FRONTEND_PORT=3001</code></div>
+
+            <h3>Database Connection Issues</h3>
+            <p>If the backend can't connect to the database, check the logs:</p>
+            <div class="code-block"><code>docker compose logs postgres
+docker compose logs backend</code></div>
+            <p>Ensure the PostgreSQL container is fully started before the backend attempts to connect.</p>
+
+            <h3>Permission Denied Errors</h3>
+            <p>On Linux, if you encounter permission issues with volumes, you may need to check Docker permissions or run with appropriate user permissions.</p>
+
+            <h3>Container Won't Start</h3>
+            <p>Check the status of all containers:</p>
+            <div class="code-block"><code>docker compose ps
+docker compose logs</code></div>
+            <p>Try restarting from scratch:</p>
+            <div class="code-block"><code>docker compose down
+docker compose up -d</code></div>
+        </div>
+
+        <div class="card">
+            <h2>Next Steps</h2>
+            <p>Now that Ulinda is running, you can:</p>
+            <ul>
+                <li>Log in with the admin credentials</li>
+                <li>Create your first dynamic model</li>
+                <li>Add fields and configure permissions</li>
+                <li>Invite team members</li>
+                <li>Build your custom low-code application</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
