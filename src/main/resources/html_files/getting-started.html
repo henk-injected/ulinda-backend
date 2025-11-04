@@ -89,13 +89,18 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        .code-wrapper {
+            position: relative;
+            margin: 1rem 0;
+        }
+
         .code-block {
             background-color: #2d2d2d;
             color: #f8f8f2;
             padding: 1.5rem;
+            padding-top: 2.5rem;
             border-radius: 6px;
             overflow-x: auto;
-            margin: 1rem 0;
             font-family: 'Courier New', monospace;
             font-size: 0.9rem;
             line-height: 1.5;
@@ -104,6 +109,33 @@
         .code-block code {
             display: block;
             white-space: pre;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s, transform 0.1s;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #555;
+        }
+
+        .copy-button:active {
+            transform: scale(0.95);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
         }
 
         .step {
@@ -421,5 +453,61 @@ docker compose up -d</code></div>
             </ul>
         </div>
     </div>
+
+    <script>
+        // Initialize copy buttons when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all code blocks
+            const codeBlocks = document.querySelectorAll('.code-block');
+
+            codeBlocks.forEach(function(codeBlock) {
+                // Create wrapper div
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+
+                // Insert wrapper before code block
+                codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+
+                // Move code block into wrapper
+                wrapper.appendChild(codeBlock);
+
+                // Create copy button
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = 'Copy';
+                copyButton.setAttribute('aria-label', 'Copy code to clipboard');
+
+                // Add copy button to wrapper
+                wrapper.appendChild(copyButton);
+
+                // Add click event listener
+                copyButton.addEventListener('click', function() {
+                    // Get the code text
+                    const code = codeBlock.querySelector('code');
+                    const text = code ? code.textContent : codeBlock.textContent;
+
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(text).then(function() {
+                        // Show success feedback
+                        copyButton.textContent = 'Copied!';
+                        copyButton.classList.add('copied');
+
+                        // Reset button after 2 seconds
+                        setTimeout(function() {
+                            copyButton.textContent = 'Copy';
+                            copyButton.classList.remove('copied');
+                        }, 2000);
+                    }).catch(function(err) {
+                        // Fallback for older browsers
+                        console.error('Failed to copy:', err);
+                        copyButton.textContent = 'Failed';
+                        setTimeout(function() {
+                            copyButton.textContent = 'Copy';
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
