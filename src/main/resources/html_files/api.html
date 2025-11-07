@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Ulinda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li:first-child {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fff;
+            margin-right: auto;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #444;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #555;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: #666;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .code-wrapper {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            padding-top: 2.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s, transform 0.1s;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background-color: #555;
+        }
+
+        .copy-button:active {
+            transform: scale(0.95);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .endpoint {
+            background-color: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+        }
+
+        .method.get {
+            background-color: #61affe;
+            color: white;
+        }
+
+        .method.post {
+            background-color: #49cc90;
+            color: white;
+        }
+
+        .method.put {
+            background-color: #fca130;
+            color: white;
+        }
+
+        .method.delete {
+            background-color: #f93e3e;
+            color: white;
+        }
+
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .info strong {
+            color: #0c5460;
+        }
+
+        ul {
+            margin: 1rem 0 1rem 2rem;
+            color: #666;
+        }
+
+        ul li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table th,
+        table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: #333;
+        }
+
+        table td {
+            color: #666;
+        }
+
+        table code {
+            background-color: #e9ecef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            nav ul li:first-child {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .code-block {
+                padding: 1rem;
+                padding-top: 2.5rem;
+                font-size: 0.8rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Ulinda</li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="screenshots.html">Screenshots</a></li>
+            <li><a href="api.html">API</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>API Documentation</h1>
+        <p>Access your Ulinda data programmatically using our REST API. This guide covers authentication and common endpoints.</p>
+
+        <div class="card">
+            <h2>Authentication</h2>
+
+            <h3>Generating an API Token</h3>
+            <p>Before you can use the API, you need to generate an API token from the Ulinda web interface:</p>
+
+            <ol>
+                <li>Log in to your Ulinda account</li>
+                <li>Navigate to the API Tokens page</li>
+                <li>Click "Generate New Token"</li>
+                <li>Give your token a descriptive name</li>
+                <li>Copy and securely store the generated token</li>
+            </ol>
+
+            <div class="note">
+                <strong>Important:</strong> Your API token will only be shown once. Store it securely and never share it publicly.
+            </div>
+
+            <h3>Using Your Token</h3>
+            <p>Include your API token in the <code>Authorization</code> header with the <code>Bearer</code> scheme:</p>
+
+            <div class="code-block"><code>Authorization: Bearer YOUR_API_TOKEN_HERE</code></div>
+
+            <h3>Example cURL Request</h3>
+            <div class="code-block"><code>curl -X GET "https://your-ulinda-instance.com/api/v1/models" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE" \
+  -H "Content-Type: application/json"</code></div>
+
+            <h3>Example with JavaScript (Fetch API)</h3>
+            <div class="code-block"><code>const token = 'YOUR_API_TOKEN_HERE';
+const baseUrl = 'https://your-ulinda-instance.com';
+
+fetch(`${baseUrl}/api/v1/models`, {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  }
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));</code></div>
+
+            <h3>Example with Python (Requests)</h3>
+            <div class="code-block"><code>import requests
+
+token = 'YOUR_API_TOKEN_HERE'
+base_url = 'https://your-ulinda-instance.com'
+
+headers = {
+    'Authorization': f'Bearer {token}',
+    'Content-Type': 'application/json'
+}
+
+response = requests.get(f'{base_url}/api/v1/models', headers=headers)
+data = response.json()
+print(data)</code></div>
+        </div>
+
+        <div class="card">
+            <h2>Common API Endpoints</h2>
+
+            <h3>Models</h3>
+
+            <div class="endpoint">
+                <h4><span class="method get">GET</span><span class="endpoint-path">/api/v1/models</span></h4>
+                <p>Get all models accessible to the authenticated user.</p>
+                <p><strong>Response:</strong> List of models with their metadata.</p>
+            </div>
+
+            <div class="code-block"><code>curl -X GET "https://your-ulinda-instance.com/api/v1/models" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE"</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method get">GET</span><span class="endpoint-path">/api/v1/models/{modelId}</span></h4>
+                <p>Get detailed information about a specific model, including fields and permissions.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                    <li><code>modelId</code> - UUID of the model</li>
+                </ul>
+            </div>
+
+            <div class="code-block"><code>curl -X GET "https://your-ulinda-instance.com/api/v1/models/{modelId}" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE"</code></div>
+        </div>
+
+        <div class="card">
+            <h3>Records</h3>
+
+            <div class="endpoint">
+                <h4><span class="method post">POST</span><span class="endpoint-path">/api/v1/models/{modelId}/records/search</span></h4>
+                <p>Search and retrieve records from a model with pagination, filtering, and sorting.</p>
+                <p><strong>Request Body:</strong></p>
+            </div>
+
+            <div class="code-block"><code>{
+  "page": 0,
+  "pageSize": 20,
+  "sortBy": "created_at",
+  "sortDirection": "DESC",
+  "filters": []
+}</code></div>
+
+            <p><strong>Example Request:</strong></p>
+            <div class="code-block"><code>curl -X POST "https://your-ulinda-instance.com/api/v1/models/{modelId}/records/search" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "page": 0,
+    "pageSize": 20,
+    "sortBy": "created_at",
+    "sortDirection": "DESC"
+  }'</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method get">GET</span><span class="endpoint-path">/api/v1/records/{modelId}/{recordId}</span></h4>
+                <p>Get a specific record by ID.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                    <li><code>modelId</code> - UUID of the model</li>
+                    <li><code>recordId</code> - UUID of the record</li>
+                </ul>
+            </div>
+
+            <div class="code-block"><code>curl -X GET "https://your-ulinda-instance.com/api/v1/records/{modelId}/{recordId}" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE"</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method post">POST</span><span class="endpoint-path">/api/v1/models/{modelId}/records</span></h4>
+                <p>Create a new record in a model.</p>
+                <p><strong>Request Body:</strong></p>
+            </div>
+
+            <div class="code-block"><code>{
+  "fieldValues": {
+    "field_name_1": "value1",
+    "field_name_2": "value2",
+    "field_name_3": 123
+  }
+}</code></div>
+
+            <p><strong>Example Request:</strong></p>
+            <div class="code-block"><code>curl -X POST "https://your-ulinda-instance.com/api/v1/models/{modelId}/records" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fieldValues": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "age": 30
+    }
+  }'</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method put">PUT</span><span class="endpoint-path">/api/v1/records/{modelId}/{recordId}</span></h4>
+                <p>Update an existing record.</p>
+                <p><strong>Request Body:</strong></p>
+            </div>
+
+            <div class="code-block"><code>{
+  "fieldValues": {
+    "field_name_1": "updated_value1",
+    "field_name_2": "updated_value2"
+  }
+}</code></div>
+
+            <p><strong>Example Request:</strong></p>
+            <div class="code-block"><code>curl -X PUT "https://your-ulinda-instance.com/api/v1/records/{modelId}/{recordId}" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fieldValues": {
+      "name": "Jane Doe",
+      "email": "jane@example.com"
+    }
+  }'</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method delete">DELETE</span><span class="endpoint-path">/api/v1/records/{modelId}/{recordId}</span></h4>
+                <p>Delete a record.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                    <li><code>modelId</code> - UUID of the model</li>
+                    <li><code>recordId</code> - UUID of the record</li>
+                    <li><code>overrideLinkedModelsError</code> (optional) - Set to <code>true</code> to force delete despite linked records</li>
+                </ul>
+            </div>
+
+            <div class="code-block"><code>curl -X DELETE "https://your-ulinda-instance.com/api/v1/records/{modelId}/{recordId}" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE"</code></div>
+        </div>
+
+        <div class="card">
+            <h3>Token Management</h3>
+
+            <div class="endpoint">
+                <h4><span class="method get">GET</span><span class="endpoint-path">/api/tokens/my-tokens</span></h4>
+                <p>Get a list of all API tokens for the authenticated user.</p>
+            </div>
+
+            <div class="code-block"><code>curl -X GET "https://your-ulinda-instance.com/api/tokens/my-tokens" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE"</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method post">POST</span><span class="endpoint-path">/api/tokens/generate</span></h4>
+                <p>Generate a new API token.</p>
+                <p><strong>Request Body:</strong></p>
+            </div>
+
+            <div class="code-block"><code>{
+  "name": "My API Token",
+  "expiresAt": "2025-12-31T23:59:59Z"
+}</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method delete">DELETE</span><span class="endpoint-path">/api/tokens/{tokenId}</span></h4>
+                <p>Revoke an API token.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                    <li><code>tokenId</code> - UUID of the token to revoke</li>
+                </ul>
+            </div>
+
+            <div class="code-block"><code>curl -X DELETE "https://your-ulinda-instance.com/api/tokens/{tokenId}" \
+  -H "Authorization: Bearer YOUR_API_TOKEN_HERE"</code></div>
+        </div>
+
+        <div class="card">
+            <h3>Record Linking</h3>
+
+            <div class="endpoint">
+                <h4><span class="method post">POST</span><span class="endpoint-path">/api/v1/records/link-records</span></h4>
+                <p>Create a link between two records in different models.</p>
+                <p><strong>Request Body:</strong></p>
+            </div>
+
+            <div class="code-block"><code>{
+  "modelLinkId": "uuid-of-model-link",
+  "sourceRecordId": "uuid-of-source-record",
+  "targetRecordId": "uuid-of-target-record"
+}</code></div>
+
+            <div class="endpoint">
+                <h4><span class="method delete">DELETE</span><span class="endpoint-path">/api/v1/model/linked-records/{modelLinkId}/{linkId}</span></h4>
+                <p>Remove a link between two records.</p>
+                <p><strong>Parameters:</strong></p>
+                <ul>
+                    <li><code>modelLinkId</code> - UUID of the model link definition</li>
+                    <li><code>linkId</code> - UUID of the specific link to remove</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Need Help?</h2>
+            <p>For more information or support:</p>
+            <ul>
+                <li>Visit our <a href="https://github.com/henk-injected/ulinda-backend" target="_blank">GitHub repository</a></li>
+                <li>Follow us on <a href="https://twitter.com/Ulinda_Low_Code" target="_blank">Twitter/X</a></li>
+                <li>Check the source code for detailed implementation examples</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Initialize copy buttons when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all code blocks
+            const codeBlocks = document.querySelectorAll('.code-block');
+
+            codeBlocks.forEach(function(codeBlock) {
+                // Create wrapper div
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+
+                // Insert wrapper before code block
+                codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+
+                // Move code block into wrapper
+                wrapper.appendChild(codeBlock);
+
+                // Create copy button
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.textContent = 'Copy';
+                copyButton.setAttribute('aria-label', 'Copy code to clipboard');
+
+                // Add copy button to wrapper
+                wrapper.appendChild(copyButton);
+
+                // Add click event listener
+                copyButton.addEventListener('click', function() {
+                    // Get the code text
+                    const code = codeBlock.querySelector('code');
+                    const text = code ? code.textContent : codeBlock.textContent;
+
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(text).then(function() {
+                        // Show success feedback
+                        copyButton.textContent = 'Copied!';
+                        copyButton.classList.add('copied');
+
+                        // Reset button after 2 seconds
+                        setTimeout(function() {
+                            copyButton.textContent = 'Copy';
+                            copyButton.classList.remove('copied');
+                        }, 2000);
+                    }).catch(function(err) {
+                        // Fallback for older browsers
+                        console.error('Failed to copy:', err);
+                        copyButton.textContent = 'Failed';
+                        setTimeout(function() {
+                            copyButton.textContent = 'Copy';
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
