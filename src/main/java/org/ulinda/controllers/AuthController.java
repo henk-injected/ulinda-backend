@@ -30,6 +30,12 @@ public class AuthController {
     private final SessionService sessionService;
     private final SecuritySettingsService securitySettingsService;
 
+    @Value("${ulinda.cookie.secure:false}")
+    private boolean cookieSecure;
+
+    @Value("${ulinda.cookie.samesite:Lax}")
+    private String cookieSameSite;
+
     public AuthController(UserService userService,
                           SessionService sessionService,
                           SecuritySettingsService securitySettingsService) {
@@ -78,9 +84,10 @@ public class AuthController {
             // Create secure cookie
             Cookie sessionCookie = new Cookie("SESSION_ID", sessionId.toString());
             sessionCookie.setHttpOnly(true);
-            sessionCookie.setSecure(true);
+            sessionCookie.setSecure(cookieSecure);
             sessionCookie.setPath("/");
             sessionCookie.setMaxAge(Math.toIntExact(securitySettingsService.getSessionTimeoutMinutes() * 60)); // Convert ms to seconds
+            sessionCookie.setAttribute("SameSite", cookieSameSite);
             response.addCookie(sessionCookie);
 
             // Return response without token
@@ -185,7 +192,8 @@ public class AuthController {
         clearCookie.setMaxAge(0);  // Expire immediately
         clearCookie.setPath("/");
         clearCookie.setHttpOnly(true);
-        clearCookie.setSecure(true);  // Match your original cookie settings
+        clearCookie.setSecure(cookieSecure);  // Match your original cookie settings
+        clearCookie.setAttribute("SameSite", cookieSameSite);
         response.addCookie(clearCookie);
     }
 }
